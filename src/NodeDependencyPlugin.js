@@ -1,7 +1,10 @@
 'package ndi-express-plugin';
 
+'import ndi-express-plugin.HTTPConfig';
+'import ndi.FunctionRunner';
+
 '@BeforeLoadContainer'
-function NodeDependencyPlugin(HTTPConfig){
+function NodeDependencyPlugin(HTTPConfig, FunctionRunner){
 
     var annotationMethods = [
         "Get",
