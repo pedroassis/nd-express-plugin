@@ -9,4 +9,4 @@ function Interceptor () {
     }
 }
 
-module.exports = UserHandler;
+module.exports = Interceptor;
