@@ -1,10 +1,11 @@
 'package ndi-express-plugin';
 
 'import ndi-express-plugin.HTTPConfig';
-'import ndi.FunctionRunner';
+'import ndi-express-plugin.Express';
+'import ndi-express-plugin.ExpressBinder';
 
 '@BeforeLoadContainer'
-function NodeDependencyPlugin(HTTPConfig, FunctionRunner){
+function NodeDependencyPlugin(Express, ExpressBinder){
 
     var annotationMethods = [
         "Get",
@@ -13,41 +14,50 @@ function NodeDependencyPlugin(HTTPConfig, FunctionRunner){
         "Delete",
         "Options",
         "Patch",
-        "Head"
+        "Head",
+        "Intercept"
     ];
 
-    "@InjectAnnotatedWith([@RequestHandler])"
-    this.configure = function(instances) {
-        for (var i = instances.length - 1; i >= 0; i--) {
-            var instance = instances[i];
-            var keys = Object.keys(instance);
-            for (var i = keys.length - 1; i >= 0; i--) {
-                bindListeners(instance, keys[i]);
-            };
+    "@InjectAnnotatedWith([@RequestHandler, @Interceptor, @ExpressConfiguration])"
+    this.configure = function(handlers, interceptors, expressConfiguration) {
+        var app = Express.express();
+        for (var i = expressConfiguration.length - 1; i >= 0; i--) {
+            expressConfiguration[i].configure && expressConfiguration[i].configure(app); 
         }
+        if(!expressConfiguration.length){
+            app.listen(9999);
+        }
+
+        requestHandlers(interceptors, app, 'Interceptor', 'all');
+
+        requestHandlers (handlers, app, 'RequestHandler');
     };
 
-    function bindListeners (instance, key) {
-        var binder = {
-            url : getUrl(instance)
-        };
-        var method = instance[key];
-        for (var i = method.annotations.length - 1; i >= 0; i--) {
-            var annotation = method.annotations[i];
-            if(annotationMethods.indexOf(annotation.name) !== -1){
-                binder[annotation.name.toLowerCase()] = instance[key].bind(instance);
+    function requestHandlers (handlers, app, annotation, httpMethod) {
+        for (var i = handlers.length - 1; i >= 0; i--) {
+            var instance = handlers[i];
+            var keys = Object.keys(instance);
+            for (var j = keys.length - 1; j >= 0; j--) {
+                var key = keys[j];
+                var method = instance[key];
+                bindListeners(method, app, instance.constructor.annotations[annotation].value || '', httpMethod);
             }
         }
-        HTTPConfig.bind(binder);
     }
 
-    function getUrl (instance) {
-        var annotations = instance.constructor.annotations;
-        var handler;
-        for (var i = annotations.length - 1; i >= 0; i--) {
-            handler = annotations[i].name = 'RequestHandler' ? annotations[i] : handler;
+    function bindListeners (method, app, root, httpMethod) {
+        for (var i in method.annotations) {
+            var annotation = method.annotations[i];
+            if(annotationMethods.indexOf(annotation.name) !== -1 && packaged(annotation)){
+                httpMethod = httpMethod || annotation.name.toLowerCase();
+                var url = root + (annotation.value || '');
+                ExpressBinder.bind(app, httpMethod, url, method);
+            }
         }
-        return handler.value;
+    }
+
+    function packaged(annotation) {
+        return !annotation.packaged || annotation.packaged.indexOf('ndi-express-plugin.') === 0;
     }
 
 }

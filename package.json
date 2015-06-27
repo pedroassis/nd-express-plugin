@@ -20,6 +20,7 @@
     "HTTPServer": "pedroassis/HTTPServer"
   },
   "ndi" : {
+    "isPlugin" : true,
     "source" : "src"
   }
 }
