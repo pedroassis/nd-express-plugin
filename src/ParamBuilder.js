@@ -28,6 +28,9 @@ function ParamBuilder() {
             res.status(status || 400).send(response);
         };
 
+        params.request = req;
+        params.response = res;
+
         return params;
     };
 
