@@ -1,8 +1,8 @@
-'package ndi-express-plugin';
+'package nd-express-plugin';
 
-'import ndi-express-plugin.HTTPConfig';
-'import ndi-express-plugin.Express';
-'import ndi-express-plugin.ExpressBinder';
+'import nd-express-plugin.HTTPConfig';
+'import nd-express-plugin.Express';
+'import nd-express-plugin.ExpressBinder';
 
 '@BeforeLoadContainer'
 function NodeDependencyPlugin(Express, ExpressBinder){
@@ -57,7 +57,7 @@ function NodeDependencyPlugin(Express, ExpressBinder){
     }
 
     function packaged(annotation) {
-        return !annotation.packaged || annotation.packaged.indexOf('ndi-express-plugin.') === 0;
+        return !annotation.packaged || annotation.packaged.indexOf('nd-express-plugin.') === 0;
     }
 
 }

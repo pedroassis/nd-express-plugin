@@ -1,4 +1,4 @@
-'package ndi-express-plugin';
+'package nd-express-plugin';
 
 function Express () {
     return {

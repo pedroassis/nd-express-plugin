@@ -1,25 +1,25 @@
 {
-  "name": "ndi-express-plugin",
+  "name": "nd-express-plugin",
   "version": "0.0.1",
-  "description": "NDI Plugin to enable annotation based Express configuration",
+  "description": "node-dependency Plugin to enable annotation based Express configuration",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pedroassis/ndi-express-plugin.git"
+    "url": "https://github.com/pedroassis/nd-express-plugin.git"
   },
   "author": "Pedro Assis <pedro@pedroassis.com.br> (https://github.com/pedroassis)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/pedroassis/ndi-express-plugin/issues"
+    "url": "https://github.com/pedroassis/nd-express-plugin/issues"
   },
-  "homepage": "https://github.com/pedroassis/ndi-express-plugin",
+  "homepage": "https://github.com/pedroassis/nd-express-plugin",
   "dependencies": {
-    "HTTPServer": "pedroassis/HTTPServer"
+    "express" : "^4.13.0"
   },
-  "ndi" : {
+  "node-dependency" : {
     "isPlugin" : true,
     "source" : "src"
   }

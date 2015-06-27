@@ -1,7 +1,7 @@
-'package ndi-express-plugin';
+'package nd-express-plugin';
 
-'import ndi-express-plugin.ParamBuilder';
-'import ndi.FunctionRunner';
+'import nd-express-plugin.ParamBuilder';
+'import nd.FunctionRunner';
 function ExpressBinder(ParamBuilder, FunctionRunner) {
     
     this.bind = function(ExpressApp, method, url, callback) {
