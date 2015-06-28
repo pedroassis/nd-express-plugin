@@ -48,7 +48,7 @@ Usages:
 		module.exports = Handler;
 ```  
 
-**HTTP Annotations: @Get, @Post, @Put, @Patch, @Head, @Options, @Delete** 
+**HTTP Annotations: @Get, @Post, @Put, @Patch, @Head, @Options, @Delete**   
 These annotations are used to indicate that a method from a RequestHandler class should be called when a request with the defined HTTP Method is made to the desired url.  
 You can receive a lot of parameters in those methods, like the request or the response
 
