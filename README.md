@@ -1,5 +1,5 @@
 
-## nd-express-plugin ##  
+## nd-express-plugin
 
 This is the first plugin that adds ExpressJS bindings using the annotation support from [node-dependency](https://github.com/pedroassis/node-dependency/tree/v2).  
 
@@ -50,6 +50,8 @@ Usages:
 
 **HTTP Annotations: @Get, @Post, @Put, @Patch, @Head, @Options, @Delete** 
 These annotations are used to indicate that a method from a RequestHandler class should be called when a request with the defined HTTP Method is made to the desired url.  
+You can receive a lot of parameters in those methods, like the request or the response
+
  - Targets: Method
  - Parameters: a String representing the url to listen
 
