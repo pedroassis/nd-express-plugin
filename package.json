@@ -1,6 +1,6 @@
 {
   "name": "nd-express-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "node-dependency Plugin to enable annotation based Express configuration",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "node-dependency" : {
     "isPlugin" : true,
-    "source" : "src"
+    "source" : "src",
+    "bootstraps" : true
   }
 }
