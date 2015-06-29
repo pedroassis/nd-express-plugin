@@ -9,7 +9,7 @@ function ExpressBinder(ParamBuilder, FunctionRunner) {
             var locals = ParamBuilder.build(req, res, next);
             var hadException;
 
-            var returnedValue = runCallback(callback, locals, function(error) {
+            var returnedValue = doRequest(callback, locals, function(error) {
                 hadException = true;
                 errorHandler(res, error);
             });
@@ -23,7 +23,16 @@ function ExpressBinder(ParamBuilder, FunctionRunner) {
         });
     };
 
-    
+    function doRequest(callback, locals, errorHandler) {
+        var missing = callback.$inject.filter(function(parameter) {
+            return locals[parameter] === void(0);
+        });
+        if(missing.length){
+            errorHandler(("Invalid Request! Missing " + missing.join(', ')).replace(/ \$/, ' '))
+        } else {
+            return runCallback(callback, locals, errorHandler);
+        }
+    }
 
     function bindPromise (promise, response) {
         promise.then(response.send.bind(response), errorHandler.bind(this, response));
