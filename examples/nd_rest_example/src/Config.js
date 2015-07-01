@@ -1,6 +1,6 @@
 
 '@ExpressConfiguration'
-function Config (serverConfig) {
+function Config (serverConfig) { // serverConfig.json injected here
     
     this.configure = function(expressApp) {
         expressApp.listen(serverConfig.port, serverConfig.host, function() {

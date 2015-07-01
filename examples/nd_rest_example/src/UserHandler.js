@@ -1,6 +1,6 @@
 'package com.pedro'
 
-'@RequestHandler'
+'@RequestHandler("/user")'
 function UserHandler () {
     
     '@Get("/all")'
@@ -15,7 +15,8 @@ function UserHandler () {
     '@Get("/id/:id")'
     this.getByID = function($id) {
         return {
-            userID : $id
+            userID : $id,
+            name : "aSDFGHJKL"
         };
     };
 

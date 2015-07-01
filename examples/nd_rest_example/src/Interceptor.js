@@ -9,9 +9,8 @@ function Interceptor () {
     }
     
     "@Intercept('/user')"
-    this.user = function(url, next, response) {
+    this.user = function(url, next, response) { // You can inject the request, response and other sfuff
         console.log("Intercepted the url: '" + url + "' on /user");
-        console.log(session);
         response.status(401).send('Access Denied');
     }
 }
