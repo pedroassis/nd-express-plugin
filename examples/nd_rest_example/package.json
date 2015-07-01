@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "nd-express-plugin": "0.0.1",
+    "nd-express-plugin": "*",
     "node-dependency": "^2.0.3"
   },
   "ndi": {

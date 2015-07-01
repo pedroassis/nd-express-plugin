@@ -3,9 +3,12 @@
 'import nd-express-plugin.HTTPConfig';
 'import nd-express-plugin.Express';
 'import nd-express-plugin.ExpressBinder';
+'import nd-express-plugin.NodeDependencyConfig';
 
 '@BeforeLoadContainer'
-function NodeDependencyPlugin(Express, ExpressBinder){
+function ExpressPlugin(Express, ExpressBinder, NodeDependencyConfig){
+
+    var server = NodeDependencyConfig.express;
 
     var annotationMethods = [
         "Get",
@@ -18,14 +21,17 @@ function NodeDependencyPlugin(Express, ExpressBinder){
         "Intercept"
     ];
 
+    var isRunning;
+
     "@InjectAnnotatedWith([@RequestHandler, @Interceptor, @ExpressConfiguration])"
     this.configure = function(handlers, interceptors, expressConfiguration) {
         var app = Express.express();
         for (var i = expressConfiguration.length - 1; i >= 0; i--) {
             expressConfiguration[i].configure && expressConfiguration[i].configure(app); 
         }
-        if(!expressConfiguration.length){
-            app.listen(9999);
+        if(!isRunning && server && server.port && server.host){
+            app.listen(server.port, server.host);
+            isRunning = true;
         }
 
         requestHandlers(interceptors, app, 'Interceptor', 'all');

@@ -1,6 +1,6 @@
 {
   "name": "nd-express-plugin",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "node-dependency Plugin to enable annotation based Express configuration",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,17 @@
     "url": "https://github.com/pedroassis/nd-express-plugin/issues"
   },
   "homepage": "https://github.com/pedroassis/nd-express-plugin",
+  "devDependencies": {
+    "mocha": "^1.21.5",
+    "sinon": "*",
+    "chai": "^1.9.2",
+    "node-dependency" : "*"
+  },
   "dependencies": {
     "express" : "^4.13.0"
+  },
+  "scripts": {
+    "test": "mocha $(find tests -name '*Test.js') ./tests"
   },
   "node-dependency" : {
     "isPlugin" : true,
