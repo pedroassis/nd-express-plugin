@@ -10,8 +10,9 @@ What this module does is to allow you to create web services without the boilerp
 npm install --save nd-express-plugin
 ```
 
-You''ll need to have installed [node-dependency](https://github.com/pedroassis/node-dependency/tree/v2).  
+You''ll need to have installed [node-dependency](https://github.com/pedroassis/node-dependency/).  
 
+You should also check this other plugin [nd-mongo](https://github.com/pedroassis/nd-mongo) which uses this plugin to expose mongo collection though a HTTP API.  
 
 Node-dependency will automatically find this module and call all needed function to configure it, therefore you do not need to require it.  
 
