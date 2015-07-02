@@ -22,11 +22,13 @@ function ExpressPlugin(Express, ExpressBinder, NodeDependencyConfig){
     ];
 
     var isRunning;
-    var app;
+    var app = Express.express();
+    
+    app.use(Express.bodyParser.json());
+    app.use(Express.bodyParser.urlencoded({ extended: true }));
 
     "@InjectAnnotatedWith([@RequestHandler, @Interceptor, @ExpressConfiguration])"
     this.configure = function(handlers, interceptors, expressConfiguration) {
-        app = getApp();
         for (var i = expressConfiguration.length - 1; i >= 0; i--) {
             expressConfiguration[i].configure && expressConfiguration[i].configure(app); 
         }
@@ -37,38 +39,33 @@ function ExpressPlugin(Express, ExpressBinder, NodeDependencyConfig){
             isRunning = true;
         }
 
-        requestHandlers(interceptors, app, 'Interceptor', 'all');
+        requestHandlers(interceptors, 'Interceptor', 'all');
 
-        requestHandlers (handlers, app, 'RequestHandler');
+        requestHandlers (handlers, 'RequestHandler');
     };
-
-    function getApp () {
-        app = app || Express.express();
-        return app;
-    }
 
     this.addHandler = function(handler) {
         var keys = Object.keys(handler);
         for (var j = keys.length - 1; j >= 0; j--) {
             var key = keys[j];
             var method = handler[key];
-            bindListeners(method, getApp(), handler.constructor.annotations.RequestHandler.value || '');
+            bindListeners(method, handler.constructor.annotations.RequestHandler.value || '');
         }
     };
 
-    function requestHandlers (handlers, app, annotation, httpMethod) {
+    function requestHandlers (handlers, annotation, httpMethod) {
         for (var i = handlers.length - 1; i >= 0; i--) {
             var instance = handlers[i];
             var keys = Object.keys(instance);
             for (var j = keys.length - 1; j >= 0; j--) {
                 var key = keys[j];
                 var method = instance[key];
-                bindListeners(method, app, instance.constructor.annotations[annotation].value || '', httpMethod);
+                bindListeners(method, instance.constructor.annotations[annotation].value || '', httpMethod);
             }
         }
     }
 
-    function bindListeners (method, app, root, httpMethod) {
+    function bindListeners (method, root, httpMethod) {
         for (var i in method.annotations) {
             var annotation = method.annotations[i];
             if(annotationMethods.indexOf(annotation.name) !== -1 && packaged(annotation)){

@@ -2,7 +2,8 @@
 
 function Express () {
     return {
-        express : require('express')
+        express : require('express'),
+        bodyParser  : require('body-parser')
     };
 }
 

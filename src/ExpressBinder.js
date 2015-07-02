@@ -37,7 +37,12 @@ function ExpressBinder(ParamBuilder, FunctionRunner) {
     }
 
     function bindPromise (promise, response) {
-        promise.then(response.send.bind(response), errorHandler.bind(this, response));
+        promise.then(function(body) {
+            response.send(body);
+        })
+        .then(null, function(error) {
+            errorHandler(response, error);
+        });
     }
 
     function isPromise(obj) {
@@ -59,8 +64,8 @@ function ExpressBinder(ParamBuilder, FunctionRunner) {
      *  Error handler, future versions should provide exception handling feature
      */
     function errorHandler (response, error) {
-        var message = error && error.stack || error.message || error;
-        response.status(400).send(message || 'Bad Request');
+        var message = error && (error.stack || error.message);
+        response.status(400).send(message || error || 'Bad Request');
     }
 }
 module.exports = ExpressBinder;
