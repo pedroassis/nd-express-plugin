@@ -5,6 +5,8 @@
 function ExpressBinder(ParamBuilder, FunctionRunner) {
     
     this.bind = function(ExpressApp, method, url, callback) {
+        console.log('Binding a new listener to %s with method %s, the callback waits for %s', url, method, callback.$inject.join(', ').replace(/\$/, ''));
+
         ExpressApp[method](url, function(req, res, next) {
             var locals = ParamBuilder.build(req, res, next);
             var hadException;

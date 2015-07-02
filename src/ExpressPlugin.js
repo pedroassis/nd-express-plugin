@@ -3,7 +3,7 @@
 'import nd-express-plugin.HTTPConfig';
 'import nd-express-plugin.Express';
 'import nd-express-plugin.ExpressBinder';
-'import nd-express-plugin.NodeDependencyConfig';
+'import nd.NodeDependencyConfig';
 
 '@BeforeLoadContainer'
 function ExpressPlugin(Express, ExpressBinder, NodeDependencyConfig){
@@ -22,21 +22,38 @@ function ExpressPlugin(Express, ExpressBinder, NodeDependencyConfig){
     ];
 
     var isRunning;
+    var app;
 
     "@InjectAnnotatedWith([@RequestHandler, @Interceptor, @ExpressConfiguration])"
     this.configure = function(handlers, interceptors, expressConfiguration) {
-        var app = Express.express();
+        app = getApp();
         for (var i = expressConfiguration.length - 1; i >= 0; i--) {
             expressConfiguration[i].configure && expressConfiguration[i].configure(app); 
         }
         if(!isRunning && server && server.port && server.host){
             app.listen(server.port, server.host);
+
+            console.log('Express listening at http://%s:%s', server.host, server.port);
             isRunning = true;
         }
 
         requestHandlers(interceptors, app, 'Interceptor', 'all');
 
         requestHandlers (handlers, app, 'RequestHandler');
+    };
+
+    function getApp () {
+        app = app || Express.express();
+        return app;
+    }
+
+    this.addHandler = function(handler) {
+        var keys = Object.keys(handler);
+        for (var j = keys.length - 1; j >= 0; j--) {
+            var key = keys[j];
+            var method = handler[key];
+            bindListeners(method, getApp(), handler.constructor.annotations.RequestHandler.value || '');
+        }
     };
 
     function requestHandlers (handlers, app, annotation, httpMethod) {
@@ -68,4 +85,4 @@ function ExpressPlugin(Express, ExpressBinder, NodeDependencyConfig){
 
 }
 
-module.exports = NodeDependencyPlugin;
+module.exports = ExpressPlugin;
